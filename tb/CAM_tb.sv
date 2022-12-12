@@ -4,7 +4,7 @@
 // Email         : flyskywalker92@gmail.com
 // Website       : https://github.com/flyskywalker
 // Created On    : 2022/12/12 21:50
-// Last Modified : 2022/12/12 23:21
+// Last Modified : 2022/12/12 23:34
 // File Name     : CAM_tb.sv
 // Description   :
 //         
@@ -32,7 +32,9 @@ logic [CAM_DW-1:0] data_out;
 logic              data_ready;
 logic              data_valid;
 logic              hit;
-logic clk,rst_n;
+logic              mask_en;
+
+logic              clk,rst_n;
 always #5 clk = ~clk;
 
 CAM i_CAM(.*);
@@ -47,6 +49,7 @@ initial begin
     mask_in = '0;
     mask_strb = '0;
     data_valid = '0;
+    mask_en = '0;
     #10;
     @(posedge clk);
         rst_n = 1;
@@ -66,6 +69,7 @@ task write_mask (logic [CAM_MW-1:0] mask, logic [CAM_MW-1:0] strb);
     @(posedge clk);
         mask_in = mask;
         mask_strb = strb;
+        mask_en = 1;
     $display("Time:%t, Data Mask = 0x%0h, Mask strobe = 0x%0h",$time,mask,strb);
 endtask
 

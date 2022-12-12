@@ -1,0 +1,8 @@
+*.log
+hdl/spyglass*
+sim/.*
+sim/DVE*
+sim/sim*
+sim/csrc*
+sim/*.vpd
+sim/ucli*

@@ -4,7 +4,7 @@
 // Email         : flyskywalker92@gmail.com
 // Website       : https://github.com/flyskywalker
 // Created On    : 2022/11/26 20:52
-// Last Modified : 2022/12/12 23:23
+// Last Modified : 2022/12/12 23:31
 // File Name     : CAM.sv
 // Description   :
 //         
@@ -33,10 +33,10 @@ module CAM #(
 
     input logic [CAM_MW-1:0] mask_in,
     input logic [CAM_MW-1:0] mask_strb,
+    input logic              mask_en,
 
     output logic[CAM_DW-1:0] data_out,
     output logic[CAM_AW-1:0] addr_out,
-    output logic             data_ready,
     input  logic             data_valid,
     output logic             hit
 );
@@ -90,7 +90,7 @@ module CAM #(
                 mem_strb[i] = '0;
                 line_hit[i] = '0;
                 mem_strb[i] = mem[i][CAM_DW-1 -: CAM_MW] & mask_strb;
-                if(line_occupied[i] && (mem_strb[i] == mask_in))
+                if(line_occupied[i] && (mem_strb[i] == mask_in) && mask_en)
                     line_hit[i] = 1'b1;
             end
         end
@@ -102,9 +102,10 @@ module CAM #(
     // output logic
     always_comb begin
         for(int j=0;j<DEPTH;j++) begin
-            if(first_hit[j])
+            if(first_hit[j]) begin
                 data_out = mem[j];
                 addr_out = j;
+            end
         end
     end
 endmodule
