@@ -1,0 +1,3 @@
+../hdl/std.sv
+../hdl/CAM.sv
+../tb/CAM_tb.sv
