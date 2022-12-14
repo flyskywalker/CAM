@@ -4,7 +4,7 @@
 // Email         : flyskywalker92@gmail.com
 // Website       : https://github.com/flyskywalker
 // Created On    : 2022/12/12 21:50
-// Last Modified : 2022/12/12 23:34
+// Last Modified : 2022/12/14 21:24
 // File Name     : CAM_tb.sv
 // Description   :
 //         
@@ -94,5 +94,7 @@ initial begin
     write_data(32'hFFFF_FFFF,8'b1);
     write_mask(3'b111,3'b111);
     read_data(data,addr);
+    @(posedge clk);
+    $finish;
 end
 endmodule
