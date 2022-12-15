@@ -3,7 +3,7 @@ TB_TOP = CAM_tb
 comp:
 	vcs -full64 -sverilog \
 	+v2k \
-	-timescale=1ns/1ps \
+	-timescale=1ns/1ps -debug_all \
 	-debug_acc+all+dmptf -debug_region+cell+encrypt \
 	-l ${TB_TOP}comp.log \
 	-kdb -lca \
