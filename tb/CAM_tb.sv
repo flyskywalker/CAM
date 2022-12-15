@@ -4,7 +4,7 @@
 // Email         : flyskywalker92@gmail.com
 // Website       : https://github.com/flyskywalker
 // Created On    : 2022/12/12 21:50
-// Last Modified : 2022/12/14 21:24
+// Last Modified : 2022/12/15 22:12
 // File Name     : CAM_tb.sv
 // Description   :
 //         
@@ -74,15 +74,20 @@ task write_mask (logic [CAM_MW-1:0] mask, logic [CAM_MW-1:0] strb);
 endtask
 
 task read_data (logic [CAM_DW-1:0] data, logic [CAM_AW-1:0] addr);
-    @(posedge clk);
-    wait (hit)
-    @(posedge clk);
-        data = data_out;
-        addr = addr_out;
-        data_valid = 1'b1;
-    $display("Time:%t, Hit data = 0x%0h, Hit addr = 0x%0h",$time,data,addr);
-    @(posedge clk);
-        data_valid = 1'b0;        
+    for (int i=0; i<=20;i++) begin
+        @(posedge clk);
+        data_valid = 1'b0;
+        if(hit) begin
+            data = data_out;
+            addr = addr_out;
+            data_valid = 1'b1;
+            $display("Time:%t, Hit data = 0x%0h, Hit addr = 0x%0h",$time,data,addr);
+            return;
+            end
+        else begin
+            continue;
+        end
+    end
 endtask
 
 logic [CAM_DW-1:0] data;
@@ -92,7 +97,11 @@ initial begin
     wait(rst_n == 0)
     wait(rst_n == 1)
     write_data(32'hFFFF_FFFF,8'b1);
-    write_mask(3'b111,3'b111);
+    write_mask(3'b110,3'b111);
+    write_mask(3'b110,3'b110);
+end
+
+initial begin
     read_data(data,addr);
     @(posedge clk);
     $finish;

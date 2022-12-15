@@ -6,3 +6,6 @@ sim/sim*
 sim/csrc*
 sim/*.vpd
 sim/ucli*
+sim/inter*
+sim/novas*
+sim/verdi*
